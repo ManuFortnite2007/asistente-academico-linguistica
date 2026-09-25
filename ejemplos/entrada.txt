@@ -1,0 +1,3 @@
+mostrar tareas pendientes
+agregar tarea matematicas
+consultar horario de redes
