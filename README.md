@@ -41,6 +41,39 @@ El análisis sintáctico, semántico y la ejecución real de acciones se conserv
 - Tkinter solo para la GUI. En Windows suele venir con Python; en Arch/CachyOS puede instalarse mediante el paquete del sistema `tk`.
 - No es necesario ejecutar `pip install`; `requirements.txt` confirma que no hay dependencias externas.
 
+## Instalación rápida
+
+Después de publicar esta rama en GitHub, una copia nueva podrá prepararse así:
+
+```bash
+git clone https://github.com/ManuFortnite2007/asistente-academico-linguistica.git
+cd asistente-academico-linguistica
+git switch feat/lexer-fase2-avanzado
+```
+
+No hay paquetes de Python que instalar. Compruebe la versión y ejecute las pruebas:
+
+```bash
+python --version
+python -m unittest discover -s tests -v
+```
+
+En Linux puede ser necesario usar `python3` en lugar de `python`. Para habilitar la GUI:
+
+```bash
+# Arch Linux / CachyOS
+sudo pacman -S tk
+
+# Debian / Ubuntu
+sudo apt install python3-tk
+```
+
+En Windows, Tkinter se incluye normalmente al instalar Python desde python.org. Si el comando `python` no está disponible, utilice `py`:
+
+```powershell
+py main.py --gui
+```
+
 ## Estructura
 
 ```text
@@ -48,6 +81,7 @@ El análisis sintáctico, semántico y la ejecución real de acciones se conserv
 ├── main.py
 ├── README.md
 ├── requirements.txt
+├── .github/workflows/tests.yml
 ├── ejemplos/
 │   ├── entrada.txt
 │   ├── entrada_valida.txt
@@ -59,6 +93,7 @@ El análisis sintáctico, semántico y la ejecución real de acciones se conserv
 │   ├── automatas.md
 │   ├── especificacion_lexica.md
 │   ├── pruebas_y_trazabilidad.md
+│   ├── PUBLICACION_GITHUB.md
 │   └── README_fase_base_archivado.md
 ├── src/
 │   ├── analizadores/
@@ -171,6 +206,20 @@ python -m unittest discover -s tests -v
 ```
 
 La suite cubre palabras, números, identificadores, vocabulario reservado, cadenas, escapes, símbolos inválidos, entrada vacía, Unicode, posiciones, CRLF, estados y transiciones, recuperación, exportación y lectura de archivos. La matriz requisito-prueba está en [pruebas_y_trazabilidad.md](docs/pruebas_y_trazabilidad.md).
+
+GitHub Actions ejecutará automáticamente esta misma suite con Python 3.10 y 3.12 en Windows y Linux cuando se publique un `push` o se abra un pull request.
+
+## Solución de problemas
+
+- **`python` no se reconoce en Windows:** pruebe `py` o reinstale Python activando “Add Python to PATH”.
+- **`No module named tkinter`:** instale el paquete `tk`/`python3-tk` de su distribución; la modalidad de consola seguirá funcionando.
+- **Archivo no encontrado:** ejecute los comandos desde la carpeta que contiene `main.py`.
+- **La entrada inválida termina con código 1:** es el comportamiento esperado; indica que el análisis finalizó y encontró errores léxicos.
+- **Caracteres acentuados incorrectos:** guarde las entradas `.txt` con codificación UTF-8.
+
+## Publicación en GitHub
+
+El repositorio se entrega con una rama de trabajo, historial local limpio, exclusión de archivos temporales y validación automática. La guía [PUBLICACION_GITHUB.md](docs/PUBLICACION_GITHUB.md) contiene los comandos que deben ejecutarse posteriormente. Preparar el proyecto no publica nada por sí mismo.
 
 ## Arquitectura y modelo de AFD
 
