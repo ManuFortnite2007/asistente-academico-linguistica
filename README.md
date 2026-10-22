@@ -1,310 +1,189 @@
-# Proyecto Integrador - Asistente Académico por Comandos Textuales
+# Asistente Académico — Lexer Pro
 
-## Fase 2: Estructura inicial del código y arquitectura base
+Proyecto Integrador de **Lingüística Computacional**, Fase 2: código ejecutable del analizador léxico.
 
 **Carrera:** Ingeniería en Sistemas Computacionales  
-**Materia:** Lingüística Computacional  
-**Integrantes:** Manuel Pool , Jorge Medina , Isaac Cardos  
 **Profesor:** Alejandro Isidoro Madariaga  
+**Integrantes:** Manuel Pool, Jorge Medina e Isaac Cardos
 
----
+## Descripción y objetivo
 
-## 1. Descripción
-
-Este repositorio contiene la estructura base del proyecto integrador
-**Asistente Académico por Comandos Textuales**.
-
-El sistema se construirá durante el cuatrimestre para reconocer,
-analizar y validar comandos escritos relacionados con actividades
-académicas, por ejemplo:
-
-```text
-mostrar tareas pendientes
-agregar tarea matematicas
-consultar horario de redes
-```
-
-En esta fase todavía no se implementa el procesamiento completo del
-lenguaje. El objetivo es establecer una arquitectura modular que sirva
-de base para los analizadores:
-
-- Léxico
-- Sintáctico
-- Semántico
-
-También se incluye un módulo capaz de leer texto carácter por carácter,
-ya sea desde una cadena escrita en consola o desde un archivo plano.
-
----
-
-## 2. Restricción principal
-
-El proyecto **NO utiliza librerías externas de Procesamiento de Lenguaje
-Natural**.
-
-No se utilizan herramientas como:
-
-- NLTK
-- spaCy
-- Transformers
-- TextBlob
-- Stanza
-
-Todo el procesamiento se construirá desde cero utilizando únicamente
-Python y su biblioteca estándar.
-
----
-
-## 3. Requisitos
-
-- Python 3.10 o superior
-- Windows, Linux o macOS
-- Terminal o consola
-
-No se requiere instalar paquetes adicionales.
-
----
-
-## 4. Estructura del proyecto
-
-```text
-Asistente_Academico_Fase_2/
-│
-├── main.py
-├── README.md
-├── .gitignore
-│
-├── ejemplos/
-│   └── entrada.txt
-│
-├── src/
-│   ├── __init__.py
-│   │
-│   ├── core/
-│   │   ├── __init__.py
-│   │   └── lector_texto.py
-│   │
-│   ├── modelos/
-│   │   ├── __init__.py
-│   │   ├── token.py
-│   │   ├── estado.py
-│   │   └── automata.py
-│   │
-│   └── analizadores/
-│       ├── __init__.py
-│       ├── analizador_lexico.py
-│       ├── analizador_sintactico.py
-│       └── analizador_semantico.py
-│
-└── tests/
-    └── test_base.py
-```
-
----
-
-## 5. Clases principales
-
-### `Caracter`
-
-Representa cada carácter leído e incluye:
-
-- valor
-- índice
-- línea
-- columna
-
-Esto permitirá que en etapas posteriores los errores léxicos o
-sintácticos puedan indicar exactamente dónde ocurrió el problema.
-
-### `LectorTexto`
-
-Puede recibir:
-
-1. Una cadena escrita directamente.
-2. Un archivo `.txt`.
-
-Después permite recorrer la entrada **carácter por carácter**.
-
-### `Token`
-
-Representa una unidad léxica del lenguaje.
-
-Atributos iniciales:
-
-- tipo
-- lexema
-- línea
-- columna
-
-### `TipoToken`
-
-Enumeración con categorías iniciales como:
-
-- DETERMINANTE
-- SUSTANTIVO
-- VERBO
-- PREPOSICION
-- ADJETIVO
-- NUMERO
-- OPERADOR
-- IDENTIFICADOR
-- DESCONOCIDO
-- FIN
-
-### `Estado`
-
-Representa un estado perteneciente a un autómata.
-
-Permite indicar si es:
-
-- Estado inicial
-- Estado final
-
-### `Automata`
-
-Estructura base de un Autómata Finito Determinista.
-
-Actualmente permite:
-
-- Agregar estados.
-- Definir un único estado inicial.
-- Marcar estados finales.
-- Crear transiciones.
-- Procesar una cadena.
-- Determinar si una cadena es aceptada o rechazada.
-
----
-
-## 6. Cómo ejecutar el proyecto
-
-### Opción A - Descargar el ZIP
-
-1. Descomprimir el archivo.
-2. Abrir una terminal dentro de la carpeta del proyecto.
-3. Ejecutar:
-
-```bash
-python main.py
-```
-
-En algunos sistemas puede ser necesario utilizar:
-
-```bash
-python3 main.py
-```
-
-El programa mostrará dos opciones:
-
-```text
-1. Leer una cadena escrita en consola
-2. Leer el archivo de ejemplo
-```
-
-Si se selecciona la primera opción, el usuario puede escribir cualquier
-cadena.
-
-Si se selecciona la segunda opción, se cargará:
-
-```text
-ejemplos/entrada.txt
-```
-
-Después se mostrará cada carácter con su índice, línea y columna.
-
----
-
-## 7. Ejemplo de ejecución
-
-Entrada:
-
-```text
-mostrar tarea
-```
-
-Salida aproximada:
-
-```text
-Índice=000 | Línea=01 | Columna=01 | Carácter='m'
-Índice=001 | Línea=01 | Columna=02 | Carácter='o'
-Índice=002 | Línea=01 | Columna=03 | Carácter='s'
-...
-```
-
-Al final también se ejecuta una demostración de las estructuras
-`Token`, `Estado` y `Automata`.
-
----
-
-## 8. Ejecutar las pruebas
-
-Desde la carpeta principal:
-
-```bash
-python -m unittest discover -s tests
-```
-
-o:
-
-```bash
-python3 -m unittest discover -s tests
-```
-
-Si todo funciona correctamente debe aparecer un resultado similar a:
-
-```text
-....
-----------------------------------------------------------------------
-Ran 4 tests
-
-OK
-```
-
----
-
-## 9. Trabajo planeado para las siguientes fases
-
-### Fase siguiente - Analizador léxico
-
-Se desarrollará un reconocedor capaz de transformar el texto en una
-secuencia de tokens mediante autómatas construidos manualmente.
+La aplicación transforma comandos académicos escritos en lenguaje natural controlado en tokens con tipo, lexema, línea y columna. El motor está construido desde cero con autómatas finitos deterministas y biblioteca estándar de Python; no usa expresiones regulares como reconocedor ni dependencias de PLN.
 
 Ejemplo:
 
 ```text
 mostrar tareas pendientes
+buscar tarea "Proyecto de redes"
 ```
 
-podrá convertirse posteriormente en:
+El análisis sintáctico, semántico y la ejecución real de acciones se conservan como módulos para fases posteriores y no se simulan en esta entrega.
+
+## Funcionalidades implementadas
+
+- Lexer secuencial para archivos completos y texto escrito.
+- AFD reutilizables para identificadores, números y cadenas.
+- Vocabulario académico con verbos, sustantivos, adjetivos, preposiciones y determinantes.
+- Identificadores Unicode, enteros, decimales, cadenas, operadores y delimitadores.
+- Comentarios `#` y `//`, espacios, tabulaciones, CR/LF/CRLF y múltiples líneas.
+- Escapes de cadena `\\n`, `\\t`, `\\r`, `\\"` y `\\\\`.
+- Diagnósticos `LEX001` a `LEX004` con posición, fragmento, descripción y sugerencia.
+- Recuperación tras errores independientes sin ciclos infinitos.
+- CLI con tabla, trazas, códigos de salida y exportación.
+- GUI oscura Tkinter/ttk con editor, números de línea, resaltado y navegación de errores.
+- Visualizador Canvas con estados, aceptación, transiciones y simulación paso a paso.
+- Exportación auténtica a TXT, CSV y JSON con estadísticas.
+- Pruebas automatizadas `unittest` sin dependencias externas.
+
+## Requisitos
+
+- Python 3.10 o superior.
+- Tkinter solo para la GUI. En Windows suele venir con Python; en Arch/CachyOS puede instalarse mediante el paquete del sistema `tk`.
+- No es necesario ejecutar `pip install`; `requirements.txt` confirma que no hay dependencias externas.
+
+## Estructura
 
 ```text
-VERBO("mostrar")
-SUSTANTIVO("tareas")
-ADJETIVO("pendientes")
+.
+├── main.py
+├── README.md
+├── requirements.txt
+├── ejemplos/
+│   ├── entrada.txt
+│   ├── entrada_valida.txt
+│   ├── entrada_invalida.txt
+│   ├── entrada_multilinea.txt
+│   └── entrada_avanzada.txt
+├── docs/
+│   ├── arquitectura.md
+│   ├── automatas.md
+│   ├── especificacion_lexica.md
+│   ├── pruebas_y_trazabilidad.md
+│   └── README_fase_base_archivado.md
+├── src/
+│   ├── analizadores/
+│   │   ├── analizador_lexico.py
+│   │   ├── reconocedores.py
+│   │   ├── analizador_sintactico.py
+│   │   └── analizador_semantico.py
+│   ├── core/
+│   │   ├── lector_texto.py
+│   │   └── exportador.py
+│   ├── gui/
+│   │   ├── aplicacion.py
+│   │   └── visualizador_automatas.py
+│   └── modelos/
+│       ├── automata.py
+│       ├── diagnostico.py
+│       ├── estado.py
+│       ├── resultado.py
+│       └── token.py
+└── tests/
+    ├── test_base.py
+    ├── test_exportador.py
+    └── test_lexer.py
 ```
 
-### Analizador sintáctico
+## Uso por consola
 
-Validará que los tokens cumplan la gramática definida para el proyecto.
+Mostrar ayuda:
 
-### Analizador semántico
+```bash
+python main.py --help
+```
 
-Comprobará que un comando sintácticamente válido también tenga sentido
-dentro del dominio académico.
+Analizar una entrada válida:
 
----
+```bash
+python main.py analizar ejemplos/entrada_valida.txt
+```
 
-## 10. Estado actual
+Analizar una entrada con errores:
 
-Esta entrega cumple con la estructura base solicitada:
+```bash
+python main.py analizar ejemplos/entrada_invalida.txt
+```
 
-- Lectura de cadenas de texto.
-- Lectura de archivos planos.
-- Recorrido carácter por carácter.
-- Clase `Token`.
-- Clase `Estado`.
-- Clase `Automata`.
-- Estructura preparada para análisis léxico.
-- Estructura preparada para análisis sintáctico.
-- Estructura preparada para análisis semántico.
-- Código sin librerías externas.
-- Archivo README con instrucciones de ejecución y prueba.
+Exportar el mismo resultado a JSON, CSV o TXT:
+
+```bash
+python main.py analizar ejemplos/entrada_avanzada.txt --exportar salida.json
+python main.py analizar ejemplos/entrada_valida.txt --exportar salida.csv
+python main.py analizar ejemplos/entrada_invalida.txt --exportar salida.txt
+```
+
+Mostrar una traza real del AFD:
+
+```bash
+python main.py analizar ejemplos/entrada_valida.txt --traza identificador --entrada-traza curso_2026
+```
+
+Los códigos de salida son: `0` análisis correcto, `1` errores léxicos encontrados, `2` error de argumentos/archivo/exportación y `3` Tkinter no disponible.
+
+## Interfaz gráfica
+
+```bash
+python main.py --gui
+```
+
+La barra permite abrir texto, analizar, limpiar, guardar resultados, elegir ejemplos, consultar ayuda y abrir el visualizador. Al seleccionar un diagnóstico, el cursor salta a su posición. El visualizador permite elegir `identificador`, `numero` o `cadena`, preparar una entrada y avanzar transición por transición sobre los mismos AFD del lexer.
+
+Si Tkinter no está instalado, la CLI continúa completamente operativa.
+
+## Categorías de tokens
+
+`VERBO`, `SUSTANTIVO`, `ADJETIVO`, `PREPOSICION`, `DETERMINANTE`, `IDENTIFICADOR`, `NUMERO_ENTERO`, `NUMERO_DECIMAL`, `CADENA`, `OPERADOR`, `DELIMITADOR` y `FIN`.
+
+Una palabra desconocida con forma válida se clasifica como `IDENTIFICADOR`, no como error. Las palabras reservadas se comparan normalizadas a minúsculas y sin diacríticos; el lexema original siempre se conserva.
+
+Consulte la [especificación léxica](docs/especificacion_lexica.md) para el alfabeto, escapes y recuperación, y [autómatas](docs/automatas.md) para diagramas y tablas de transición.
+
+## Ejemplo de salida
+
+Para `mostrar tareas pendientes`:
+
+```text
++-----------+------------+-------+---------+
+| TIPO      | LEXEMA     | LÍNEA | COLUMNA |
++-----------+------------+-------+---------+
+| VERBO     | mostrar    | 1     | 1       |
+| SUSTANTIVO| tareas     | 1     | 9       |
+| ADJETIVO  | pendientes | 1     | 16      |
+| FIN       |            | 1     | 26      |
++-----------+------------+-------+---------+
+```
+
+La anchura real se ajusta automáticamente al contenido.
+
+## Errores léxicos
+
+- `LEX001`: símbolo no reconocido.
+- `LEX002`: cadena sin comilla de cierre.
+- `LEX003`: decimal incompleto.
+- `LEX004`: secuencia de escape no admitida.
+
+Cada diagnóstico contiene tipo, descripción, fragmento, línea, columna y sugerencia. La estrategia exacta se documenta en [especificacion_lexica.md](docs/especificacion_lexica.md).
+
+## Pruebas
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+La suite cubre palabras, números, identificadores, vocabulario reservado, cadenas, escapes, símbolos inválidos, entrada vacía, Unicode, posiciones, CRLF, estados y transiciones, recuperación, exportación y lectura de archivos. La matriz requisito-prueba está en [pruebas_y_trazabilidad.md](docs/pruebas_y_trazabilidad.md).
+
+## Arquitectura y modelo de AFD
+
+`Automata` admite transiciones exactas y predicados de clase (`LETRA`, `DIGITO`). `trazar()` registra cada transición y es la única fuente de datos del simulador visual. `ResultadoAnalisis` es inmutable y alimenta sin divergencias la CLI, GUI y exportadores. Consulte [arquitectura.md](docs/arquitectura.md).
+
+## Limitaciones actuales
+
+- No existe todavía validación sintáctica ni semántica.
+- El vocabulario reservado es inicial y ampliable; términos no registrados son identificadores.
+- Las cadenas no pueden abarcar varias líneas.
+- No se ejecutan operaciones académicas ni se persisten tareas.
+- El resaltado GUI se actualiza al solicitar un análisis, no mientras se escribe.
+
+## Trabajo futuro
+
+Las siguientes fases pueden incorporar una gramática de comandos, AST, validación semántica, catálogo académico y ejecución controlada. Los módulos sintáctico y semántico se conservaron expresamente para esa evolución.

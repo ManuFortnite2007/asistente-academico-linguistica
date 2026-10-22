@@ -1,0 +1,4 @@
+mostrar tareas pendientes
+agregar tarea matemáticas
+consultar el horario de redes
+buscar tarea "Proyecto de redes"

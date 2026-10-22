@@ -1,0 +1,4 @@
+# Resultado esperado: LEX001 para @ y $, LEX002 para la cadena sin cerrar.
+mostrar @ tareas
+agregar $ materia
+buscar tarea "Proyecto sin cierre

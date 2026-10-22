@@ -9,6 +9,7 @@ class Estado:
     nombre: str
     es_inicial: bool = False
     es_final: bool = False
+    descripcion: str = ""
 
     def __post_init__(self) -> None:
         if not self.nombre or not self.nombre.strip():
