@@ -1,6 +1,6 @@
 # Asistente Académico — Lexer Pro
 
-Proyecto Integrador de **Lingüística Computacional**, Fase 2: código ejecutable del analizador léxico.
+Aplicación desarrollada para la Fase 2 del Proyecto Integrador de **Lingüística Computacional**.
 
 **Carrera:** Ingeniería en Sistemas Computacionales  
 **Profesor:** Alejandro Isidoro Madariaga  
@@ -8,7 +8,7 @@ Proyecto Integrador de **Lingüística Computacional**, Fase 2: código ejecutab
 
 ## Descripción y objetivo
 
-La aplicación transforma comandos académicos escritos en lenguaje natural controlado en tokens con tipo, lexema, línea y columna. El motor está construido desde cero con autómatas finitos deterministas y biblioteca estándar de Python; no usa expresiones regulares como reconocedor ni dependencias de PLN.
+La aplicación analiza comandos académicos escritos en un lenguaje natural controlado y los convierte en tokens. Cada token conserva su tipo, lexema y posición dentro del texto. El reconocimiento se realiza con autómatas finitos deterministas implementados con la biblioteca estándar de Python.
 
 Ejemplo:
 
@@ -17,7 +17,7 @@ mostrar tareas pendientes
 buscar tarea "Proyecto de redes"
 ```
 
-El análisis sintáctico, semántico y la ejecución real de acciones se conservan como módulos para fases posteriores y no se simulan en esta entrega.
+Esta versión se concentra en el análisis léxico. El análisis sintáctico, el análisis semántico y la ejecución de acciones académicas quedan reservados para fases posteriores.
 
 ## Funcionalidades implementadas
 
@@ -32,8 +32,16 @@ El análisis sintáctico, semántico y la ejecución real de acciones se conserv
 - CLI con tabla, trazas, códigos de salida y exportación.
 - GUI oscura Tkinter/ttk con editor, números de línea, resaltado y navegación de errores.
 - Visualizador Canvas con estados, aceptación, transiciones y simulación paso a paso.
-- Exportación auténtica a TXT, CSV y JSON con estadísticas.
+- Exportación a TXT, CSV y JSON con estadísticas.
 - Pruebas automatizadas `unittest` sin dependencias externas.
+
+## Cómo funciona
+
+El programa recibe un texto y lo recorre carácter por carácter. Según el símbolo encontrado, selecciona el autómata adecuado para reconocer identificadores, números o cadenas; los operadores y delimitadores se comparan con los símbolos admitidos por el lenguaje.
+
+Cuando una palabra coincide con el vocabulario académico, se clasifica como verbo, sustantivo, adjetivo, preposición o determinante. Las demás palabras válidas se conservan como identificadores. Al finalizar, el lexer entrega la lista de tokens, los diagnósticos encontrados y un resumen del análisis.
+
+La interfaz gráfica, la consola y los exportadores utilizan el mismo resultado, por lo que muestran la misma información. Si aparece un error, el lexer registra su ubicación e intenta continuar con el resto de la entrada.
 
 ## Requisitos
 
@@ -41,14 +49,13 @@ El análisis sintáctico, semántico y la ejecución real de acciones se conserv
 - Tkinter solo para la GUI. En Windows suele venir con Python; en Arch/CachyOS puede instalarse mediante el paquete del sistema `tk`.
 - No es necesario ejecutar `pip install`; `requirements.txt` confirma que no hay dependencias externas.
 
-## Instalación rápida
+## Instalación
 
-Después de publicar esta rama en GitHub, una copia nueva podrá prepararse así:
+Clone el repositorio y entre en la carpeta del proyecto:
 
 ```bash
-git clone https://github.com/ManuFortnite2007/asistente-academico-linguistica.git
+git clone --branch feat/lexer-fase2-avanzado --single-branch https://github.com/ManuFortnite2007/asistente-academico-linguistica.git
 cd asistente-academico-linguistica
-git switch feat/lexer-fase2-avanzado
 ```
 
 No hay paquetes de Python que instalar. Compruebe la versión y ejecute las pruebas:
@@ -93,7 +100,6 @@ py main.py --gui
 │   ├── automatas.md
 │   ├── especificacion_lexica.md
 │   ├── pruebas_y_trazabilidad.md
-│   ├── PUBLICACION_GITHUB.md
 │   └── README_fase_base_archivado.md
 ├── src/
 │   ├── analizadores/
@@ -209,7 +215,7 @@ python -m unittest discover -s tests -v
 
 La suite cubre palabras, números, identificadores, vocabulario reservado, cadenas, escapes, símbolos inválidos, entrada vacía, Unicode, posiciones, CRLF, estados y transiciones, recuperación, exportación y lectura de archivos. La matriz requisito-prueba está en [pruebas_y_trazabilidad.md](docs/pruebas_y_trazabilidad.md).
 
-GitHub Actions ejecutará automáticamente esta misma suite con Python 3.10 y 3.12 en Windows y Linux cuando se publique un `push` o se abra un pull request.
+GitHub Actions ejecuta esta misma suite con Python 3.10 y 3.12 en Windows y Linux después de cada `push` y al abrir un pull request.
 
 ## Solución de problemas
 
@@ -219,13 +225,9 @@ GitHub Actions ejecutará automáticamente esta misma suite con Python 3.10 y 3.
 - **La entrada inválida termina con código 1:** es el comportamiento esperado; indica que el análisis finalizó y encontró errores léxicos.
 - **Caracteres acentuados incorrectos:** guarde las entradas `.txt` con codificación UTF-8.
 
-## Publicación en GitHub
-
-El repositorio se entrega con una rama de trabajo, historial local limpio, exclusión de archivos temporales y validación automática. La guía [PUBLICACION_GITHUB.md](docs/PUBLICACION_GITHUB.md) contiene los comandos que deben ejecutarse posteriormente. Preparar el proyecto no publica nada por sí mismo.
-
 ## Arquitectura y modelo de AFD
 
-`Automata` admite transiciones exactas y predicados de clase (`LETRA`, `DIGITO`). `trazar()` registra cada transición y es la única fuente de datos del simulador visual. `ResultadoAnalisis` es inmutable y alimenta sin divergencias la CLI, GUI y exportadores. Consulte [arquitectura.md](docs/arquitectura.md).
+`Automata` admite transiciones exactas y predicados de clase (`LETRA`, `DIGITO`). El método `trazar()` registra las transiciones que después utiliza el simulador visual. `ResultadoAnalisis` reúne los tokens, diagnósticos y estadísticas que consumen la consola, la interfaz y los exportadores. Consulte [arquitectura.md](docs/arquitectura.md) para conocer los componentes y sus responsabilidades.
 
 ## Limitaciones actuales
 
@@ -237,4 +239,4 @@ El repositorio se entrega con una rama de trabajo, historial local limpio, exclu
 
 ## Trabajo futuro
 
-Las siguientes fases pueden incorporar una gramática de comandos, AST, validación semántica, catálogo académico y ejecución controlada. Los módulos sintáctico y semántico se conservaron expresamente para esa evolución.
+Las siguientes fases pueden incorporar una gramática de comandos, un árbol de sintaxis, validación semántica, un catálogo académico y ejecución controlada de acciones.
