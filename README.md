@@ -161,6 +161,8 @@ Los códigos de salida son: `0` análisis correcto, `1` errores léxicos encontr
 python main.py --gui
 ```
 
+También puede abrirse haciendo doble clic en `main.py`: cuando no recibe argumentos, el programa inicia la interfaz gráfica automáticamente.
+
 La barra permite abrir texto, analizar, limpiar, guardar resultados, elegir ejemplos, consultar ayuda y abrir el visualizador. Al seleccionar un diagnóstico, el cursor salta a su posición. El visualizador permite elegir `identificador`, `numero` o `cadena`, preparar una entrada y avanzar transición por transición sobre los mismos AFD del lexer.
 
 Si Tkinter no está instalado, la CLI continúa completamente operativa.

@@ -85,7 +85,13 @@ def ejecutar_analisis(args: argparse.Namespace) -> int:
 
 def ejecutar(argv: list[str] | None = None) -> int:
     parser = construir_parser()
-    args = parser.parse_args(argv)
+    argumentos = sys.argv[1:] if argv is None else argv
+    # Al abrir main.py con doble clic, Windows no envía argumentos. En ese
+    # caso iniciamos la interfaz gráfica; la CLI conserva su comportamiento
+    # cuando se proporciona un subcomando u opción explícita.
+    if not argumentos:
+        argumentos = ["--gui"]
+    args = parser.parse_args(argumentos)
     if args.gui:
         try:
             from src.gui.aplicacion import iniciar_gui
