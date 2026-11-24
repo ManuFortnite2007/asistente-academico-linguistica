@@ -1,6 +1,6 @@
-# Asistente Académico — Lexer Pro
+# Asistente Académico — Lexer Pro + Parser LL(1) (Fase 3)
 
-Aplicación desarrollada para la Fase 2 del Proyecto Integrador de **Lingüística Computacional**.
+Aplicación desarrollada para las Fases 2 y 3 del Proyecto Integrador de **Lingüística Computacional**.
 
 **Carrera:** Ingeniería en Sistemas Computacionales  
 **Profesor:** Alejandro Isidoro Madariaga  
@@ -17,7 +17,7 @@ mostrar tareas pendientes
 buscar tarea "Proyecto de redes"
 ```
 
-Esta versión se concentra en el análisis léxico. El análisis sintáctico, el análisis semántico y la ejecución de acciones académicas quedan reservados para fases posteriores.
+Esta rama mantiene el analizador léxico y añade un **parser descendente recursivo LL(1)**, que valida comandos por línea, muestra el árbol sintáctico e informa errores con token, línea, columna y símbolos esperados. El análisis semántico y la ejecución de acciones quedan para fases posteriores.
 
 ## Funcionalidades implementadas
 
@@ -231,7 +231,7 @@ GitHub Actions ejecuta esta misma suite con Python 3.10 y 3.12 en Windows y Linu
 
 ## Limitaciones actuales
 
-- No existe todavía validación sintáctica ni semántica.
+- La validación sintáctica funciona para la gramática controlada de la Fase 3; no hay todavía validación semántica.
 - El vocabulario reservado es inicial y ampliable; términos no registrados son identificadores.
 - Las cadenas no pueden abarcar varias líneas.
 - No se ejecutan operaciones académicas ni se persisten tareas.
@@ -239,4 +239,45 @@ GitHub Actions ejecuta esta misma suite con Python 3.10 y 3.12 en Windows y Linu
 
 ## Trabajo futuro
 
-Las siguientes fases pueden incorporar una gramática de comandos, un árbol de sintaxis, validación semántica, un catálogo académico y ejecución controlada de acciones.
+La Fase 3 incorpora la gramática de comandos y el árbol de sintaxis. Las siguientes fases pueden añadir validación semántica, un catálogo académico y ejecución controlada de acciones.
+
+
+## Fase 3 — Analizador sintáctico integrado
+
+El subcomando `sintaxis` recibe un archivo de texto, usa el **mismo lexer** de
+la Fase 2 y valida cada comando mediante gramática libre de contexto LL(1).
+Construye un árbol de derivación y lo muestra en consola con las posiciones
+de cada token. Una línea con error no impide analizar las posteriores.
+
+### Ejecutar el parser y sus ejemplos
+
+```bash
+python main.py sintaxis ejemplos/sintaxis_valida.txt
+python main.py sintaxis ejemplos/sintaxis_invalida.txt
+python main.py sintaxis ejemplos/sintaxis_valida.txt --salida resultado_parser.txt
+python main.py sintaxis ejemplos/sintaxis_valida.txt --sin-arbol
+python -m unittest discover -s tests -v
+```
+
+En Linux también puede utilizarse `python3`. Para activar esta rama:
+
+```bash
+git switch feat/parser-fase3-integrado
+```
+
+Los ejemplos representan comandos académicos de una sola línea. El archivo
+`sintaxis_valida.txt` contiene órdenes aceptadas, mientras
+`sintaxis_invalida.txt` presenta errores estructurales intencionales.
+
+**Códigos SYN:** `SYN001` (token inesperado), `SYN002` (comando incompleto),
+`SYN003` (sobran tokens) y `SYN004` (verbo fuera de la gramática).
+Los mensajes contienen token inesperado, línea, columna y símbolos esperados.
+
+El código de salida de `sintaxis` es **0** si todo está correcto, **1**
+si aparece algún error léxico o sintáctico, y **2** si ocurre un error de
+archivo. El subcomando previo `analizar` y la interfaz gráfica del lexer
+siguen disponibles; el parser nuevo se expone por consola.
+
+Consulta [la especificación sintáctica](docs/especificacion_sintactica.md)
+para la lista completa de reglas y límites del lenguaje. No se han usado
+Yacc, Bison, ANTLR ni librerías externas de análisis sintáctico.
