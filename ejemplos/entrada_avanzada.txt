@@ -1,0 +1,5 @@
+# Cadenas, escapes, números, operadores y delimitadores.
+buscar tarea "Proyecto \"Redes\" - fase 2"
+agregar calificacion 95.5
+mostrar recordatorios [1, 2, 3]
+curso_2026 >= 10

@@ -1,10 +1,5 @@
-"""
-Paquete reservado para las siguientes fases del proyecto.
+"""Analizadores del asistente académico.
 
-Aquí se incorporarán:
-- Analizador léxico.
-- Analizador sintáctico.
-- Analizador semántico.
-
-En esta fase únicamente se define la arquitectura base.
+El analizador léxico está implementado en esta fase. Los contratos
+sintáctico y semántico se conservan para las entregas posteriores.
 """

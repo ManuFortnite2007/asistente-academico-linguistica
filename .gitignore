@@ -6,3 +6,13 @@ env/
 .idea/
 .vscode/
 .DS_Store
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+salida.txt
+salida.csv
+salida.json
+resultados/

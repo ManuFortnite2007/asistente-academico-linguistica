@@ -1,0 +1,5 @@
+mostrar pendientes
+buscar tarea
+mostrar tareas de redes
+listar tareas
+mostrar tareas pendientes extra

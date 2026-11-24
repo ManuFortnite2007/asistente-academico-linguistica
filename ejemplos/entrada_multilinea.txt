@@ -1,0 +1,4 @@
+mostrar las tareas pendientes
+consultar horario de programación
+agregar tarea proyecto_2026
+listar materias

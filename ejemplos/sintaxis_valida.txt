@@ -1,0 +1,6 @@
+mostrar tareas pendientes
+agregar tarea matemáticas
+consultar el horario de redes
+buscar tarea "Proyecto de redes"
+agregar calificacion 95.5
+mostrar recordatorios [1, 2, 3]
