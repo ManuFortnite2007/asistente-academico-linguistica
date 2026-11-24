@@ -25,6 +25,10 @@ def construir_parser() -> argparse.ArgumentParser:
     analizar.add_argument("--formato", choices=("txt", "csv", "json"), help="Formato explícito de exportación.")
     analizar.add_argument("--traza", choices=("identificador", "numero", "cadena"), help="AFD que se trazará.")
     analizar.add_argument("--entrada-traza", help="Cadena independiente para la simulación del AFD.")
+    sintaxis = subparsers.add_parser("sintaxis", help="Valida comandos y muestra árbol sintáctico.")
+    sintaxis.add_argument("archivo", type=Path, help="Archivo de comandos UTF-8.")
+    sintaxis.add_argument("--sin-arbol", action="store_true", help="Omite el árbol en la salida.")
+    sintaxis.add_argument("--salida", type=Path, help="Guarda un reporte sintáctico TXT.")
     return parser
 
 
@@ -102,5 +106,8 @@ def ejecutar(argv: list[str] | None = None) -> int:
             return 3
     if args.comando == "analizar":
         return ejecutar_analisis(args)
+    if args.comando == "sintaxis":
+        from src.cli_sintactico import ejecutar_sintaxis
+        return ejecutar_sintaxis(args)
     parser.print_help()
     return 0
